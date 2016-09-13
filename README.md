@@ -1,0 +1,2 @@
+# lnhunch
+Language Detection Library
