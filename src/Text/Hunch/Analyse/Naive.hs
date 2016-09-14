@@ -1,16 +1,18 @@
-module Naive where
+module Hunch.Analysis.Naive where
        ( identifyLanguage
        , identifyLanguage'  
        )
 
---------------------------------------------------------------------------------
+import Hunch.Types
 
-isCyrillic   :: Char -> Bool
-isCyrillic c = c >= '\x0400' && c <= '\x04FF'
+--------------------------------------------------------------------------------
 
 -- | check if Basic Latin
 isLatin   :: Char -> Bool
 isLatin c = c >= '\x0000' && c <= '\x007F'
+
+isCyrillic   :: Char -> Bool
+isCyrillic c = c >= '\x0400' && c <= '\x04FF'
 
 isHebrew   :: Char -> Bool
 isHebrew c = c >= '\x0590' && c <= '\x05FF'
@@ -19,7 +21,7 @@ isHebrew c = c >= '\x0590' && c <= '\x05FF'
 -- Cyrillic Range: 0400–04FF
 -- Hebrew   Range: 0590–05FF
 
-checkLang :: Char -> Lang
+checkLang :: Char -> Writing
 checkLang char
   | isLatin    char = Latin
   | isHebrew   char = Hebrew

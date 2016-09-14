@@ -1,3 +1,3 @@
-module NGram where
+module Hunch.Analysis.NGram where
 
 --------------------------------------------------------------------------------
