@@ -3,24 +3,24 @@ module Hunch.Types where
 --------------------------------------------------------------------------------
 
              -------------- Alphabetical 
-data Writing = Latin
-             | Cyrillic
-             | Greek
-             | Armenian
-             | Georgian
+data Writing = WLatin
+             | WCyrillic
+             | WGreek
+             | WArmenian
+             | WGeorgian
              -------------- Syllabic
-             | Hanzi
-             | Kanji
+             | WHanzi
+             | WKanji
              -------------- Abjad
-             | Hebrew
-             | Arabic
+             | WHebrew
+             | WArabic
              -------------- Abugida  
-             | IndicN
-             | IndicS
-             | Ethiopic
-             | Thaana
-             | Hangul
-             | Other
+             | WIndicN
+             | WIndicS
+             | WEthiopic
+             | WThaana
+             | WHangul
+             | WOther
   deriving (Show, Eq, Ord)
 
 
@@ -127,5 +127,6 @@ data Lang = Afrikaans
           | Yiddish
           | Yoruba
           | Zulu
+          | Other  
           deriving (Show, Eq, Ord)
  

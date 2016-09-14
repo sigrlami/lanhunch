@@ -1,7 +1,15 @@
-module Hunch.Analysis.Naive where
+module Hunch.Analyse.Naive 
        ( identifyLanguage
        , identifyLanguage'  
-       )
+       ) where
+
+import           Data.Function
+import           Data.List
+import qualified Data.Set           as Set
+import           Data.String.Utils
+import qualified Data.Text          as T
+import qualified Data.Text.Encoding as TE 
+import           Safe
 
 import Hunch.Types
 
@@ -23,10 +31,10 @@ isHebrew c = c >= '\x0590' && c <= '\x05FF'
 
 checkLang :: Char -> Writing
 checkLang char
-  | isLatin    char = Latin
-  | isHebrew   char = Hebrew
-  | isCyrillic char = Cyrillic
-  | otherwise       = Other
+  | isLatin    char = WLatin
+  | isHebrew   char = WHebrew
+  | isCyrillic char = WCyrillic
+  | otherwise       = WOther
                                 
 identifyLanguage :: String -> String
 identifyLanguage str = do
@@ -40,12 +48,12 @@ identifyLanguage str = do
                 otherwise -> intercalate "-" $ map (show . fst) [occ!!0, occ!!1]
   resO
 
-identifyLanguage' :: String -> Lang
+identifyLanguage' :: String -> Writing
 identifyLanguage' str = do
   let res   = map checkLang $ replace " " "" $ strip str
       res'  = rmdups res
   case headMay res' of
-    Nothing  -> Other
+    Nothing  -> WOther
     Just l   -> l
 
 -- |
@@ -56,3 +64,28 @@ rmdups = rmdups' Set.empty where
   rmdups' a (b : c) = if Set.member b a
     then rmdups' a c
     else b : rmdups' (Set.insert b a) c    
+
+-- | List of elements occurences inside
+--   of list
+occurs :: Eq a => [a] -> [(a, Int)]
+occurs xs =
+  occursAux [] xs 
+    where
+      occursAux :: Eq a => [(a, Int)] -> [a] -> [(a, Int)]
+      occursAux init    []  = init 
+      occursAux init (x:xs) = occursAux (initNew init x) xs
+        where
+
+          initNew :: Eq a => [(a, Int)] -> a -> [(a, Int)]
+          initNew init x = (remove' init x) ++ [(eval init x)] 
+
+          eval :: Eq a => [(a, Int)] -> a -> (a, Int)
+          eval []   x = (x, 1)
+          eval init x =
+            case lookup x init of
+              Nothing  -> (x, 1)
+              Just val -> (x, val+1)
+
+          remove' :: Eq a => [(a, Int)] -> a -> [(a, Int)]
+          remove' [] _  = []
+          remove' xs el = filter (\x@(a,i) -> a /= el) xs 

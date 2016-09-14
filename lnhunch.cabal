@@ -17,6 +17,10 @@ library
   hs-source-dirs:      src
   exposed-modules:     Hunch
   build-depends:       base >= 4.7 && < 5
+               ,       containers
+               ,       text
+               ,       safe
+               ,       MissingH
   default-language:    Haskell2010
 
 source-repository head
