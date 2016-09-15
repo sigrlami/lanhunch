@@ -16,6 +16,9 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Hunch
+  other-modules:       Hunch.Types
+               ,       Hunch.Analyse.Naive
+	       ,       Hunch.Analyse.NGram
   build-depends:       base >= 4.7 && < 5
                ,       containers
                ,       text
